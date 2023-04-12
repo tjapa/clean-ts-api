@@ -1,12 +1,14 @@
 module.exports = {
   mongodbMemoryServerOptions: {
     binary: {
-      version: '4.14.0',
-      skipMD5: true
+      version: "5.0.16",
+      skipMD5: true,
+      downloadDir: "/tmp",
     },
+
     instance: {
-      dbName: 'jest',
+      dbName: "jest",
     },
     autoStart: false,
-  }
-}
+  },
+};
