@@ -55,4 +55,34 @@ describe('Account Mongo Repository', () => {
     const account = await sut.loadAccountByEmail('any_email@mail.com')
     expect(account).toBeFalsy()
   })
+
+  test('Should update the account accessToken on updateAccessTokenSuccess', async () => {
+    const sut = makeSut()
+    const res = await accountCollection.insertOne({
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+    const accountId = res.insertedId
+
+    const accountWithoutToken = await accountCollection.findOne({ _id: accountId })
+    expect(accountWithoutToken).toBeTruthy()
+    expect(accountWithoutToken?.accessToken).toBeFalsy()
+
+    await sut.updateAccessToken(accountId.toHexString(), 'any_token')
+    const accountWithToken = await accountCollection.findOne({ _id: accountId })
+    expect(accountWithToken).toBeTruthy()
+    expect(accountWithToken?.name).toBe('any_name')
+    expect(accountWithToken?.email).toBe('any_email@mail.com')
+    expect(accountWithToken?.password).toBe('any_password')
+    expect(accountWithToken?.accessToken).toBe('any_token')
+
+    await sut.updateAccessToken(accountId.toHexString(), 'another_token')
+    const accountWithAnotherToken = await accountCollection.findOne({ _id: accountId })
+    expect(accountWithAnotherToken).toBeTruthy()
+    expect(accountWithAnotherToken?.name).toBe('any_name')
+    expect(accountWithAnotherToken?.email).toBe('any_email@mail.com')
+    expect(accountWithAnotherToken?.password).toBe('any_password')
+    expect(accountWithAnotherToken?.accessToken).toBe('another_token')
+  })
 })
