@@ -55,5 +55,8 @@
     "@shelf/jest-mongodb": {
       "mongodb-memory-server": "^8.12.2"
     }
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
