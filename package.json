@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/main/server.js",
-    "build": "rimraf dist && tsc",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
+    "build": "tsc",
     "up": "npm run build && docker-compose up -d",
     "down": "docker-compose down",
-    "prepare": "husky install",
+    "prepare": "[ -d '.git' ] && husky install || echo 'skipping husky'",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
@@ -49,7 +50,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^4.15.0",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "nodemon": "^3.0.1"
   },
   "overrides": {
     "@shelf/jest-mongodb": {
