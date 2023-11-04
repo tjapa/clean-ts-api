@@ -1,0 +1,6 @@
+export * from '../../../protocols'
+export * from '../../../../validation/validators/email-validation'
+export * from '../../../../domain/usecases/add-account'
+export * from '../../../../domain/models/account'
+export * from '../../../../validation/validators/validation-composite'
+export * from '../../../../domain/usecases/authentication'
