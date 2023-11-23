@@ -28,7 +28,7 @@ export class AddSurveyController implements Controller {
         question,
         answers
       }: { question: string, answers: SurveyAnswer[] } = httpRequest.body
-      await this.addSurvey.add({ question, answers })
+      await this.addSurvey.add({ question, answers, date: new Date() })
       return noContent()
     } catch (error) {
       return serverError(error)
