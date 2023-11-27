@@ -3,7 +3,7 @@ import {
   ok,
   serverError,
   unaunthorized
-} from '../../../helpers/http/http-helper'
+} from '@/presentation/helpers/http/http-helper'
 import {
   Controller,
   HttpRequest,
@@ -13,7 +13,10 @@ import {
 } from './login-controller-protocols'
 
 export class LoginController implements Controller {
-  constructor (private readonly authentication: Authentication, private readonly validation: Validation) { }
+  constructor (
+    private readonly authentication: Authentication,
+    private readonly validation: Validation
+  ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {

@@ -1,4 +1,4 @@
-export * from '../../protocols/criptography/decrypter'
-export { LoadAccountByToken } from '../../../domain/usecases/load-account-by-token'
-export { AccountModel } from '../add-account/db-add-account-protocols'
-export { LoadAccountByTokenRepository } from '../../protocols/db/account/load-account-by-token-repository'
+export * from '@/data/protocols/criptography/decrypter'
+export { LoadAccountByToken } from '@/domain/usecases/load-account-by-token'
+export { AccountModel } from '@/domain/models/account'
+export { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
