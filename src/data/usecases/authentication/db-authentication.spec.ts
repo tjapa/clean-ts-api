@@ -31,8 +31,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
 }
 
 const makeHashComparer = (): HashComparer => {
-  class HashComparerStub
-  implements HashComparer {
+  class HashComparerStub implements HashComparer {
     async compare (value: string, hash: string): Promise<boolean> {
       return true
     }
@@ -41,8 +40,7 @@ const makeHashComparer = (): HashComparer => {
 }
 
 const makeEncrypter = (): Encrypter => {
-  class EncrypterStub
-  implements Encrypter {
+  class EncrypterStub implements Encrypter {
     async encrypt (id: string): Promise<string> {
       return 'any_token'
     }
@@ -51,10 +49,8 @@ const makeEncrypter = (): Encrypter => {
 }
 
 const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
-  class UpdateAccessTokenRepositoryStub
-  implements UpdateAccessTokenRepository {
-    async updateAccessToken (id: string, token: string): Promise<void> {
-    }
+  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
+    async updateAccessToken (id: string, token: string): Promise<void> {}
   }
   return new UpdateAccessTokenRepositoryStub()
 }
@@ -72,15 +68,29 @@ const makeSut = (): SutType => {
   const hashComparerStub = makeHashComparer()
   const encrypterStub = makeEncrypter()
   const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository()
-  const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateAccessTokenRepositoryStub)
+  const sut = new DbAuthentication(
+    loadAccountByEmailRepositoryStub,
+    hashComparerStub,
+    encrypterStub,
+    updateAccessTokenRepositoryStub
+  )
 
-  return { sut, loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateAccessTokenRepositoryStub }
+  return {
+    sut,
+    loadAccountByEmailRepositoryStub,
+    hashComparerStub,
+    encrypterStub,
+    updateAccessTokenRepositoryStub
+  }
 }
 
 describe('DbAuthentication Usecase', () => {
   test('Should call LoadAccountByEmailRepository with correct email', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadAccountByEmail')
+    const loadSpy = jest.spyOn(
+      loadAccountByEmailRepositoryStub,
+      'loadAccountByEmail'
+    )
     await sut.auth(makeFakeAuthentication())
     expect(loadSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
@@ -98,7 +108,9 @@ describe('DbAuthentication Usecase', () => {
 
   test('Should return null if LoadAccountByEmailRepository returns null', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadAccountByEmail').mockReturnValueOnce(new Promise((resolve) => resolve(null)))
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadAccountByEmail')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)))
     const accessToken = await sut.auth(makeFakeAuthentication())
     expect(accessToken).toBeNull()
   })
@@ -123,7 +135,9 @@ describe('DbAuthentication Usecase', () => {
 
   test('Should return null if HashComparer returns false', async () => {
     const { sut, hashComparerStub } = makeSut()
-    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(new Promise((resolve) => resolve(false)))
+    jest
+      .spyOn(hashComparerStub, 'compare')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(false)))
     const accessToken = await sut.auth(makeFakeAuthentication())
     expect(accessToken).toBeNull()
   })
@@ -154,7 +168,10 @@ describe('DbAuthentication Usecase', () => {
 
   test('Should call UpdateAccessTokenRepository with correct values', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut()
-    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
+    const updateSpy = jest.spyOn(
+      updateAccessTokenRepositoryStub,
+      'updateAccessToken'
+    )
     await sut.auth(makeFakeAuthentication())
     expect(updateSpy).toHaveBeenCalledWith('any_id', 'any_token')
   })
