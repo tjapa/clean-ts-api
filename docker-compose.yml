@@ -1,4 +1,4 @@
-version: "3.1"
+version: '3.1'
 
 services:
   mongo:
@@ -22,6 +22,8 @@ services:
     volumes:
       - ./package.json:/usr/src/clean-node-api/package.json
       - ./dist/:/usr/src/clean-node-api/dist/
+    environment:
+      - MONGO_URL=mongodb://root:root@mongo:27017/clean-node-api?authSource=admin
     ports:
       - 5050:5050
       - 9222:9222
