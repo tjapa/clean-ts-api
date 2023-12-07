@@ -29,6 +29,9 @@ implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyById {
   async loadById (id: string): Promise<SurveyModel | null> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
     const survey = await surveyCollection.findOne({ _id: new ObjectId(id) })
+    if (!survey) {
+      return null
+    }
     const surveysWithId = MongoHelper.map(survey, survey?._id.toHexString())
     return surveysWithId
   }
