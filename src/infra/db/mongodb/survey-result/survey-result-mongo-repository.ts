@@ -17,6 +17,9 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
       },
       { upsert: true, returnDocument: 'after' }
     )
-    return MongoHelper.map(surveyResult.value)
+    return MongoHelper.map(
+      surveyResult.value,
+      surveyResult.value?._id.toHexString()
+    )
   }
 }

@@ -96,7 +96,7 @@ describe('Survey Mongo Repository', () => {
         date: new Date()
       })
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toStrictEqual(res.insertedId)
+      expect(surveyResult.id).toEqual(res.insertedId.toHexString())
       expect(surveyResult.answer).toBe(survey.answers[1].answer)
     })
   })
