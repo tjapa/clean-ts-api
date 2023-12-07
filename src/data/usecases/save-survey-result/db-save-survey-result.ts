@@ -10,7 +10,7 @@ export class DbSaveSurveyResult {
   ) { }
 
   async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-    await this.saveSurveyResultRepository.save(data)
-    return {} as unknown as SurveyResultModel
+    const surveyResult = await this.saveSurveyResultRepository.save(data)
+    return surveyResult
   }
 }
