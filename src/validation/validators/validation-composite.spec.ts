@@ -1,22 +1,15 @@
 import { MissingParamError } from '@/presentation/errors'
 import { Validation } from '@/presentation/protocols'
+import { mockValidation } from '../test'
 import { ValidationComposite } from './validation-composite'
 
-const makeValidationStub = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null as unknown as Error
-    }
-  }
-  return new ValidationStub()
-}
 interface SutTypes {
   sut: ValidationComposite
   validationStubs: Validation[]
 }
 
 const makeSut = (): SutTypes => {
-  const validationStubs = [makeValidationStub(), makeValidationStub()]
+  const validationStubs = [mockValidation(), mockValidation()]
   const sut = new ValidationComposite(validationStubs)
 
   return { sut, validationStubs }

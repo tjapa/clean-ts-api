@@ -1,32 +1,8 @@
 import { DbLoadSurveyById } from './db-load-survey-by-id'
-import {
-  LoadSurveyByIdRepository,
-  SurveyModel
-} from './db-load-survey-by-id-protocols'
+import { LoadSurveyByIdRepository } from './db-load-survey-by-id-protocols'
 import MockDate from 'mockdate'
-
-const makeFakeSurvey = (): SurveyModel => {
-  return {
-    id: 'any_id',
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }
-    ],
-    date: new Date()
-  }
-}
-
-const makeLoadSurveyByIdRepositoryStub = (): LoadSurveyByIdRepository => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (id: string): Promise<SurveyModel> {
-      return makeFakeSurvey()
-    }
-  }
-  return new LoadSurveyByIdRepositoryStub()
-}
+import { mockSurveyModel, throwError } from '@/domain/test'
+import { mockLoadSurveyByIdRepositoryStub } from '@/data/test'
 
 interface SutTypes {
   sut: DbLoadSurveyById
@@ -34,7 +10,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const loadSurveyByIdRepositoryStub = makeLoadSurveyByIdRepositoryStub()
+  const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepositoryStub()
   const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub)
   return { sut, loadSurveyByIdRepositoryStub }
 }
@@ -58,16 +34,14 @@ describe('DbLoadSurveyById Usecase', () => {
   test('Should return Survey on success', async () => {
     const { sut } = makeSut()
     const survey = await sut.loadById('any_id')
-    expect(survey).toEqual(makeFakeSurvey())
+    expect(survey).toEqual(mockSurveyModel())
   })
 
   test('Should throw if LoadSurveyByIdRepository throws', async () => {
     const { sut, loadSurveyByIdRepositoryStub } = makeSut()
     jest
       .spyOn(loadSurveyByIdRepositoryStub, 'loadById')
-      .mockImplementationOnce(() => {
-        throw new Error()
-      })
+      .mockImplementationOnce(throwError)
     const survey = sut.loadById('any_id')
     await expect(survey).rejects.toThrow()
   })

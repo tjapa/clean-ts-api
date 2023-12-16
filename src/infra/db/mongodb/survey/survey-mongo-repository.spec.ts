@@ -1,6 +1,7 @@
 import { Collection } from 'mongodb'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { SurveyMongoRepository } from './survey-mongo-repository'
+import { mockAddSurveyParams } from '@/domain/test'
 
 let surveyCollection: Collection
 
@@ -25,14 +26,7 @@ describe('Survey Mongo Repository', () => {
   describe('add()', () => {
     test('Should add a survey on success', async () => {
       const sut = makeSut()
-      await sut.add({
-        question: 'any_question',
-        answers: [
-          { image: 'any_image', answer: 'any_answer' },
-          { answer: 'any_answer' }
-        ],
-        date: new Date()
-      })
+      await sut.add(mockAddSurveyParams())
       const survey = await surveyCollection.findOne({
         question: 'any_question'
       })
