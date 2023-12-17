@@ -12,7 +12,7 @@ export const mockAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
     async add (accountData: AddAccountParams): Promise<AccountModel> {
       const fakeAccount: AccountModel = mockAccountModel()
-      return await new Promise((resolve) => resolve(fakeAccount))
+      return fakeAccount
     }
   }
   return new AddAccountRepositoryStub()

@@ -59,7 +59,7 @@ describe('SaveSurveyResult Controller', () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     jest
       .spyOn(loadSurveyByIdStub, 'loadById')
-      .mockReturnValueOnce(new Promise((resolve, reject) => resolve(null)))
+      .mockReturnValueOnce(Promise.resolve(null))
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(forbidden(new InvalidParamError('surveyId')))
   })
