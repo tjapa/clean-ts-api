@@ -1,7 +1,13 @@
 export interface SurveyResultModel {
-  id: string
   surveyId: string
   accountId: string
-  answer: string
+  answers: SurveyResultAnswerModel[]
   date: Date
+}
+
+interface SurveyResultAnswerModel {
+  answer: string
+  count: number
+  percent: number
+  image?: string
 }
