@@ -25,7 +25,7 @@ implements SaveSurveyResultRepository, LoadSurveyResultRepository {
     )
   }
 
-  async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
+  async loadBySurveyId (surveyId: string): Promise<SurveyResultModel | null> {
     const surveyResultCollection =
       await MongoHelper.getCollection('surveyResults')
     const query = new QueryBuilder()
@@ -186,9 +186,16 @@ implements SaveSurveyResultRepository, LoadSurveyResultRepository {
         answers: '$answers'
       })
       .build()
-    const surveyResult = (
-      await surveyResultCollection.aggregate(query).toArray()
-    )[0]
+    const surveyResultArray = await surveyResultCollection
+      .aggregate(query)
+      .toArray()
+
+    if (surveyResultArray.length === 0) {
+      return null
+    }
+
+    const surveyResult = surveyResultArray[0]
+
     const surveyResultModeiWithIds = {
       ...surveyResult,
       surveyId: surveyResult.surveyId.toHexString()

@@ -9,20 +9,19 @@ import { LoadSurveysRepository } from '../protocols/db/survey/load-surveys-repos
 
 export const mockAddSurveyRepository = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (surveyData: AddSurveyParams): Promise<void> {}
+    async add (surveyData: AddSurveyParams): Promise<void> { }
   }
   return new AddSurveyRepositoryStub()
 }
 
-export const mockLoadSurveyByIdRepositoryStub =
-  (): LoadSurveyByIdRepository => {
-    class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-      async loadById (id: string): Promise<SurveyModel> {
-        return mockSurveyModel()
-      }
+export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
+  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
+    async loadById (id: string): Promise<SurveyModel> {
+      return mockSurveyModel()
     }
-    return new LoadSurveyByIdRepositoryStub()
   }
+  return new LoadSurveyByIdRepositoryStub()
+}
 
 export const mockLoadSurveysRepository = (): LoadSurveysRepository => {
   class LoadRepositoryStub implements LoadSurveysRepository {
