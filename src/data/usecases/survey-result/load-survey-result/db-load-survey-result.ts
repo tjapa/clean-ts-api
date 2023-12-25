@@ -1,3 +1,4 @@
+import { SurveyModel } from '../../survey/add-survey/db-add-survey-protocols'
 import {
   LoadSurveyByIdRepository,
   LoadSurveyResult,
@@ -12,11 +13,23 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
   ) { }
 
   async load (surveyId: string): Promise<SurveyResultModel> {
-    const surveyResultModel =
+    let surveyResult =
       await this.loadSurveyResultRepository.loadBySurveyId(surveyId)
-    if (surveyResultModel === null) {
-      await this.loadSurveyByIdRespository.loadById(surveyId)
+    if (surveyResult === null) {
+      const survey = (await this.loadSurveyByIdRespository.loadById(
+        surveyId
+      )) as SurveyModel
+      surveyResult = {
+        surveyId: survey.id,
+        question: survey.question,
+        date: survey.date,
+        answers: survey.answers.map((answer) => ({
+          ...answer,
+          count: 0,
+          percent: 0
+        }))
+      }
     }
-    return surveyResultModel as SurveyResultModel
+    return surveyResult
   }
 }
